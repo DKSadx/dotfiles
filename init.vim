@@ -9,10 +9,19 @@ Plug 'https://github.com/scrooloose/nerdcommenter.git'
 Plug 'https://github.com/ap/vim-buftabline.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'vim-scripts/AutoComplPop'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+"Plug 'zxqfl/tabnine-vim'
 Plug 'Rigellute/rigel'
 Plug 'itchyny/lightline.vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
+" For mouse selection
+"set clipboard=unnamed
+"set mouse=a
 
 " Set different cursors in different modes
 let &t_SI = "\<Esc>[6 q"
@@ -23,7 +32,6 @@ let &t_EI = "\<Esc>[2 q"
 set timeoutlen=150 ttimeoutlen=0
 
 " Turns hybrid line numbers on
-set number relativenumber
 set nu rnu
 
 " Line number width
@@ -32,7 +40,7 @@ set numberwidth=2
 " Git checks file every 100ms(default 4000ms)
 set updatetime=100
 
-" Case insensitive searche
+" Case insensitive search
 set ignorecase
 
 " Persistent undo, undo works after closing file
@@ -51,23 +59,25 @@ set expandtab
 set tabstop=2       
 
 " Indents will have a width of 2
-set shiftwidth=2    
+set shiftwidth=2
 
 " Sets the number of columns for a TAB
 set softtabstop=2   
 
 " Gets rid of thing like --INSERT--
 set noshowmode 
+
 " Gets rid of display of last command
 set noshowcmd  
+
 " Gets rid of the file name displayed in the command line bar
 set shortmess+=F  
-" Gets rid of thing like --INSERT--
-set noshowmode 
-" Gets rid of display of last command
-set noshowcmd  
-" Gets rid of the file name displayed in the command line bar
-set shortmess+=F  
+
+" Don't autocomment next line
+autocmd FileType * set formatoptions-=cro
+
+" Disables folding for markdown (vim-markdown plugin)
+let g:vim_markdown_folding_disabled = 1
 
 " --------------- Colors ------------------ "
 " Colorscheme
@@ -100,14 +110,11 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " Toggle line numbers (<bar> needs to be used if chaining multiple commands)
 nnoremap <C-l> :set nu! <bar> :set rnu!<CR>
 
-" Maps S to save file
-nnoremap S :update<CR>
+" P doesn't override the deafult registrer
+vnoremap p "_dP
 
-" Maps q to exit file
-nnoremap q :q<CR>
-
-" Maps Q to force exit file
-nnoremap Q :q!<CR>
+" Maps Q to exit file
+nnoremap Q :q<CR>
 
 " Maps redo to U
 nnoremap U :redo<CR>
@@ -134,24 +141,33 @@ map <C-_> <plug>NERDCommenterToggle
 " Maps leader(space) to be same as leader-w
 map <Leader> <Plug>(easymotion-w)
 
-" Enables moving lines with alt (for loop is needed to make urxvt work with
-" the alt key)
-for i in range(97,122)
-  let c = nr2char(i)
-  exec "map \e".c." <A-".c.">"
-  exec "map! \e".c." <A-".c.">"
-endfor
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
-
 " Buffer bindings (ctrl+j/k)
 set hidden
 nnoremap <C-j> :bnext<CR>
 nnoremap <C-k> :bprev<CR>
+nnoremap <C-x> :bd<CR>
+
+" ====== fzf ======
+" Open fzf finder with ;
+map ; :Files<CR>
+" Always enable preview window on the right with 60% width
+let g:fzf_preview_window = 'right:50%'
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-h': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" ====== CoC ======
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
 
 
 " Lightline configuration
@@ -168,7 +184,6 @@ nmap ww <Plug>VimwikiTabIndex
 
 " Hides tmux bar when vim is open
 "autocmd VimEnter,VimLeave * silent !tmux set status off
-
 
 " === Extra notes ===
 " <c-a> - increases next number
