@@ -10,7 +10,11 @@ Plug 'https://github.com/ap/vim-buftabline.git'
 Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Nerd font has to be installed and used for vim-devicons to work
+Plug 'ryanoasis/vim-devicons'
+Plug 'voldikss/vim-floaterm'
 "Plug 'vim-scripts/AutoComplPop'
+Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 "Plug 'zxqfl/tabnine-vim'
@@ -19,14 +23,17 @@ Plug 'itchyny/lightline.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
-" For mouse selection
-"set clipboard=unnamed
-"set mouse=a
+" Turn on spellcheck
+"set spell
 
 " Set different cursors in different modes
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
+
+" Move on wrapped lines
+" noremap j gj
+" noremap k gk
 
 " Sets keycode timeout
 set timeoutlen=150 ttimeoutlen=0
@@ -73,6 +80,9 @@ set noshowcmd
 " Gets rid of the file name displayed in the command line bar
 set shortmess+=F  
 
+" Remove SpellCap highlight
+autocmd VimEnter * hi clear SpellCap
+
 " Don't autocomment next line
 autocmd FileType * set formatoptions-=cro
 
@@ -103,12 +113,19 @@ hi EasyMotionTarget2Second ctermbg=none ctermfg=191
 hi LineNr ctermfg=blue ctermbg=0
 
 " --------------- Bindings ------------------ "
+
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 " Press enter and then confirm each change you agree with y or decline with n.
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " Toggle line numbers (<bar> needs to be used if chaining multiple commands)
 nnoremap <C-l> :set nu! <bar> :set rnu!<CR>
+
+" Opens floating terminal with
+nnoremap ; :FloatermNew --height=0.8 --width=0.8<CR>
+
+" Remaps exit from nvim terminal to ,
+tnoremap , <C-\><C-N>
 
 " P doesn't override the deafult registrer
 vnoremap p "_dP
@@ -149,7 +166,7 @@ nnoremap <C-x> :bd<CR>
 
 " ====== fzf ======
 " Open fzf finder with ;
-map ; :Files<CR>
+map ' :Files<CR>
 " Always enable preview window on the right with 60% width
 let g:fzf_preview_window = 'right:50%'
 let g:fzf_action = {

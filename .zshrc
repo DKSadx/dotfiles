@@ -4,21 +4,56 @@
 # Neovim
 alias nv='nvim'
 alias vim='nvim'
-# Git diff in neovim
-alias gdif='nvim -c "Gdiff"'
+alias zrc='vim ~/.zshrc'
+alias vrc='vim ~/.config/nvim/init.vim'
+alias ll='ls -lGFh'
+alias ls='ls -GF'
 # Untar tar files
 alias untar='tar -zxvf'
 alias c='clear'
 # List all open ports
 alias ports='lsof -i'
+# Mac clipboard
+alias copy="tr -d '\n' | pbcopy"
+# Generade UUID
+alias uuid="uuidgen | tr '[:upper:]' '[:lower:]'"
+# Python3
+alias py="python3"
+# Add yubikey
+alias yk='ykadd'
+alias less='less -r'
+
+#--- Tmux ---
+# Attach to tmux session
+alias ta="tmux attach -t"
 # Start named tmux session
-alias tmuxn='tmux new -s'
+alias tn='tmux new -s'
+# List tmux sessions
+alias tl='tmux ls'
+
+#--- GIT ---
+# Git diff in neovim
+alias gdif='nvim -c "Gdiff"'
+alias gitA='git add'
+alias gitC='git commit -m'
+alias gitP='git push origin'
 
 #--- Kubernetes ---
 # K9s
 alias k='k9s'
-# Cd to dotfiles git directory
-alias cdL='cd ~/Documents/backup/Linux-dotfiles'
+# Kubectl
+alias kc='kubectl'
+# Descibe
+alias kcd='kubectl descibe'
+# Get
+alias kcg='kubectl get'
+# Minikube
+alias mk='minikube'
+
+# Opens man page as pdf
+man2pdf () {
+  man -t "$1" | open -fa "Preview"
+}
 
 # ---------------------------------------------- #
 # --------------- Oh-my-zsh stuff -------------- #
@@ -107,5 +142,16 @@ bindkey '^e' edit-command-line
 # ---------------------------------------------- #
 # --------------- Plugins ---------------------- #
 # ---------------------------------------------- #
-plugins=(git vi-mode extract)
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+plugins=(git osx vi-mode extract)
+
+# Enables git plugin and places the branch name to the right side
+autoload -Uz compinit && compinit
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+RPROMPT=\$vcs_info_msg_0_
+zstyle ':vcs_info:git:*' formats '%b'
+
+#source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
