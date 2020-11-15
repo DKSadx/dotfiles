@@ -1,16 +1,17 @@
 " Programs required: ripgrep, bat, node
 " Plugins
 call plug#begin('~/.vim/plugged')
-Plug 'https://github.com/junegunn/vim-easy-align.git'
-Plug 'https://github.com/easymotion/vim-easymotion.git'
-Plug 'https://github.com/tpope/vim-surround.git'
-Plug 'https://github.com/scrooloose/nerdtree.git'
-Plug 'https://github.com/jiangmiao/auto-pairs.git'
-Plug 'https://github.com/scrooloose/nerdcommenter.git'
-Plug 'https://github.com/ap/vim-buftabline.git'
-Plug 'https://github.com/ekalinin/Dockerfile.vim.git'
-Plug 'https://github.com/tpope/vim-fugitive.git'
-Plug 'https://github.com/chrisbra/Colorizer'
+Plug 'junegunn/vim-easy-align'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'scrooloose/nerdcommenter'
+Plug 'jiangmiao/auto-pairs'
+Plug 'ap/vim-buftabline'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'chrisbra/Colorizer'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Used together with fzf to append flag to Rg and Ag
 Plug 'jesseleite/vim-agriculture'
