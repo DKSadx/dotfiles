@@ -126,7 +126,7 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 nnoremap <C-l> :set nu! <bar> :set rnu!<CR>
 
 " Opens floating terminal with
-nnoremap ; :FloatermNew --height=0.8 --width=0.8<CR>
+nnoremap ' :FloatermNew --height=0.8 --width=0.8<CR>
 
 " Remaps exit from nvim terminal to ,
 tnoremap , <C-\><C-N>
@@ -169,6 +169,9 @@ if has("autocmd")
     \| exe "normal! g`\"" | endif
 endif
 
+" Open split temp in new tab
+nnoremap <C-e> :tabedit %<CR>
+
 " Buffer bindings (ctrl+j/k)
 set hidden
 " Next buffer
@@ -182,7 +185,7 @@ nnoremap <C-x> :bd<CR>
 " ============ Fzf ============ "
 " ============================= "
 " Open fzf finder with ;
-map ' :Files<CR>
+map ; :Files<CR>
 " This requires vim-agriculture plugin (appends flags)
 nnoremap <C-f> :RgRaw -i 
 nnoremap <C-b> :Buffers<CR>
