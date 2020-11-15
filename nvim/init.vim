@@ -130,7 +130,7 @@ nnoremap <C-l> :set nu! <bar> :set rnu!<CR>
 nnoremap ' :FloatermNew --height=0.8 --width=0.8<CR>
 
 " Opens lazygit in floating terminal
-nnoremap <C-g> :FloatermNew --height=1.0 --width=1.0 lazygit<CR>
+nnoremap <silent> <C-g> :FloatermNew --height=1.0 --width=1.0 lazygit<CR>
 
 " Remaps exit from nvim terminal to ,
 tnoremap , <C-\><C-N>
