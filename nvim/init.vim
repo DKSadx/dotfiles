@@ -1,4 +1,4 @@
-" Programs required: ripgrep, bat, node
+" Programs required: ripgrep, bat, lazygit, node
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
@@ -129,6 +129,9 @@ nnoremap <C-l> :set nu! <bar> :set rnu!<CR>
 " Opens floating terminal with
 nnoremap ' :FloatermNew --height=0.8 --width=0.8<CR>
 
+" Opens lazygit in floating terminal
+nnoremap <C-g> :FloatermNew --height=1.0 --width=1.0 lazygit<CR>
+
 " Remaps exit from nvim terminal to ,
 tnoremap , <C-\><C-N>
 
@@ -148,7 +151,7 @@ map Y "+y
 map <C-o> :NERDTreeToggle<CR>
 
 " Git diff
-map <C-g> :Gdiff<CR>
+"map <C-g> :Gdiff<CR>
 
 " Multiple cursors
 let g:multi_cursor_start_word_key = '<C-n>'
