@@ -1,4 +1,3 @@
-" Programs required: ripgrep, bat, lazygit, node
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
@@ -13,20 +12,34 @@ Plug 'ap/vim-buftabline'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/Colorizer'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Used together with fzf to append flag to Rg and Ag
-Plug 'jesseleite/vim-agriculture'
-" Removes highlight when you move the cursor
-Plug 'jesseleite/vim-noh'
-" Nerd font has to be installed and used for vim-devicons to work
-Plug 'ryanoasis/vim-devicons'
+Plug 'jesseleite/vim-agriculture'       " Used together with fzf to append flag to Rg and Ag
+Plug 'jesseleite/vim-noh'               " Removes highlight when you move the cursor
+Plug 'ryanoasis/vim-devicons'           " Nerd font has to be installed and used for vim-devicons to work
 Plug 'voldikss/vim-floaterm'
 Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'vimwiki/vimwiki'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'Rigellute/rigel'
+Plug 'sheerun/vim-polyglot'             " Lang pack
 Plug 'itchyny/lightline.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
+
+" Programs required: ripgrep, bat, lazygit, node, github.com/dandavison/delta
+" Interesting plugins:
+" https://github.com/camspiers/lens.vim
+" https://www.reddit.com/r/vim/comments/h8pgor/til_conceal_in_vim/
+" https://github.com/christoomey/vim-tmux-navigator
+" Plug 'powerman/vim-plugin-AnsiEsc'
+" Plug 'junegunn/goyo.vim'
+
+" TODO:
+" - snippets
+" - notes
+" - better tmux integration
+" - better Golang workflow
+" Check out these dotfiles https://github.com/davidbegin/beginfiles
 
 " Set different cursors in different modes
 let &t_SI = "\<Esc>[6 q"
@@ -91,7 +104,17 @@ autocmd FileType * set formatoptions-=cro
 " Disables folding for markdown (vim-markdown plugin)
 let g:vim_markdown_folding_disabled = 1
 
+" ----------------------------------------- "
+" --------------- Syntax ------------------ "
+" ----------------------------------------- "
+
+" Yaml syntax for *.sls files
+autocmd BufNewFile,BufRead *.sls set syntax=yaml
+
+" ----------------------------------------- "
 " --------------- Colors ------------------ "
+" ----------------------------------------- "
+
 " Colorscheme
 syntax enable
 colorscheme rigel
@@ -114,7 +137,9 @@ hi EasyMotionTarget2Second ctermbg=none ctermfg=191
 " Line number colors
 hi LineNr ctermfg=blue ctermbg=0
 
+" ------------------------------------------- "
 " --------------- Bindings ------------------ "
+" ------------------------------------------- "
 
 " By pressing ctrl+r in visual mode, you will be prompted to enter text to replace with.
 " Press enter and then confirm each change you agree with y or decline with n.
@@ -126,11 +151,14 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " Toggles spellcheck
 nnoremap <C-s> :set spell!<CR>
 
-" Opens floating terminal with
+" Opens floating terminal
 nnoremap ' :FloatermNew --height=0.8 --width=0.8<CR>
 
-" Opens lazygit in floating terminal
+" Opens lazygit in floating window
 nnoremap <silent> <C-g> :FloatermNew --height=1.0 --width=1.0 lazygit<CR>
+
+" Opens markdown preview in floating window
+nnoremap <silent> <C-n> :FloatermNew --height=1.0 --width=1.0 MDV_THEME=960.847 mdv % \| less -r<CR>
 
 " Remaps exit from nvim terminal to ,
 tnoremap , <C-\><C-N>
@@ -374,6 +402,7 @@ let g:lightline = {
       \ }
 
 " Vim wiki configs
+let g:vimwiki_list = [{'path': '~/Documents/wiki'}]
 set nocompatible
 filetype plugin on
 "syntax on
