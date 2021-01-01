@@ -7,7 +7,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdcommenter'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
+Plug 'luochen1990/rainbow'
 Plug 'ap/vim-buftabline'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/Colorizer'
@@ -22,11 +23,13 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'Rigellute/rigel'
 Plug 'sheerun/vim-polyglot'             " Lang pack
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets' " Pipe means that those two go mostly together
 Plug 'itchyny/lightline.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 " Programs required: ripgrep, bat, lazygit, node, github.com/dandavison/delta
+
 " Interesting plugins:
 " https://github.com/camspiers/lens.vim
 " https://www.reddit.com/r/vim/comments/h8pgor/til_conceal_in_vim/
@@ -36,10 +39,22 @@ call plug#end()
 
 " TODO:
 " - snippets
-" - notes
 " - better tmux integration
-" - better Golang workflow
+" - better Golang workflow?
 " Check out these dotfiles https://github.com/davidbegin/beginfiles
+
+" Enable mouse :')
+set mouse=a
+
+" When misstyping uppercase instead of lowercase
+:command W w
+:command Q q
+
+" Enable rainbow brackets (If enabled, it will disable vim-wiki folding)
+"let g:rainbow_active = 1
+
+" Enable Go imports
+let g:go_fmt_command = "goimports"
 
 " Set different cursors in different modes
 let &t_SI = "\<Esc>[6 q"
@@ -49,6 +64,12 @@ let &t_EI = "\<Esc>[2 q"
 " Move on wrapped lines
 " noremap j gj
 " noremap k gk
+
+" Enable folding
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
 
 " Sets keycode timeout
 set timeoutlen=150 ttimeoutlen=0
@@ -220,14 +241,26 @@ nnoremap <C-x> :bd<CR>
 map ; :Files<CR>
 " This requires vim-agriculture plugin (appends flags)
 nnoremap <C-f> :RgRaw -i 
-nnoremap <C-b> :Buffers<CR>
+"nnoremap <C-b> :Buffers<CR>
 " Always enable preview window on the right with 60% width
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 let g:fzf_preview_window = 'right:50%'
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
 
+" ============================= "
+" ========== Snippets ========= "
+" ============================= "
+
+" <tab> is used by CoC so ultisnips need to have a different key binding in this case it's Shift-tab
+let g:UltiSnipsExpandTrigger="<S-tab>"
+let g:UltiSnipsJumpForwardTrigger="<S-tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetStorageDirectoryForUltiSnipsEdit="/Users/Darko/.config/nvim/snippets"
 
 " ============================= "
 " ============ CoC ============ "
@@ -402,11 +435,24 @@ let g:lightline = {
       \ }
 
 " Vim wiki configs
-let g:vimwiki_list = [{'path': '~/Documents/wiki'}]
+let g:vimwiki_list = [{'path': '~/Documents/wiki',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
 set nocompatible
 filetype plugin on
 "syntax on
 nmap ww <Plug>VimwikiTabIndex
+
+" Magic for autoreloading
+" Triger `autoread` when files changes on disk
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 " Hides tmux bar when vim is open
 "autocmd VimEnter,VimLeave * silent !tmux set status off

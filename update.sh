@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-cp -R ~/.config/nvim .
+rsync -av --progress ~/.config/nvim . --exclude UltiSnips/private-*
+
 cp ~/.tmux.conf .
