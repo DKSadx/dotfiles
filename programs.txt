@@ -1,0 +1,4 @@
+lazygit
+bat
+delta
+ripgrep

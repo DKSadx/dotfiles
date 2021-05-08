@@ -13,17 +13,17 @@ Plug 'ap/vim-buftabline'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/Colorizer'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'jesseleite/vim-agriculture'       " Used together with fzf to append flag to Rg and Ag
-Plug 'jesseleite/vim-noh'               " Removes highlight when you move the cursor
-Plug 'ryanoasis/vim-devicons'           " Nerd font has to be installed and used for vim-devicons to work
+Plug 'jesseleite/vim-agriculture'                     " Used together with fzf to append flag to Rg and Ag
+Plug 'jesseleite/vim-noh'                             " Removes highlight when you move the cursor
+Plug 'ryanoasis/vim-devicons'                         " Nerd font has to be installed and used for vim-devicons to work
 Plug 'voldikss/vim-floaterm'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'vimwiki/vimwiki'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'Rigellute/rigel'
-Plug 'sheerun/vim-polyglot'             " Lang pack
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets' " Pipe means that those two go mostly together
+Plug 'sheerun/vim-polyglot'                          " Lang pack
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'  " Pipe means that those two go mostly together
 Plug 'itchyny/lightline.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
@@ -38,38 +38,58 @@ call plug#end()
 " Plug 'junegunn/goyo.vim'
 
 " TODO:
-" - snippets
 " - better tmux integration
-" - better Golang workflow?
-" Check out these dotfiles https://github.com/davidbegin/beginfiles
+" - better Golang work flow?
+" Study these dotfiles https://github.com/davidbegin/beginfiles
 
-" Enable mouse :')
+" Enable mouse
 set mouse=a
 
-" When misstyping uppercase instead of lowercase
-:command W w
-:command Q q
+" Turns spell check on start
+"set spell
+
+" When mistyping uppercase instead of lowercase
+command W w
+command Q q
+
+" Doesn't scroll screen when doing C-u and C-d, and allows C-d/u in visual and insert mode
+map <C-u> 30k
+map <C-d> 30j
 
 " Enable rainbow brackets (If enabled, it will disable vim-wiki folding)
 "let g:rainbow_active = 1
 
 " Enable Go imports
 let g:go_fmt_command = "goimports"
+" go run current file in floating window
+command G :FloatermNew --height=0.8 --width=0.8 go run %
+
+" Set default tab width to 4 for Go
+autocmd FileType go setlocal shiftwidth=4 tabstop=4
 
 " Set different cursors in different modes
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
-" Move on wrapped lines
+" Set Leader to Space
+let mapleader = "\<Space>"
+
+" Move on wrapped lines (this breaks something, forgot what)
 " noremap j gj
 " noremap k gk
 
+" Instead of going to new line (wrapping), text will stay on the same line
+set nowrap
+
 " Enable folding
-set foldmethod=indent   
+set foldmethod=indent
 set foldnestmax=10
 set nofoldenable
 set foldlevel=2
+
+" You don't have to go to the end of the window to start scrolling down
+set scrolloff=8
 
 " Sets keycode timeout
 set timeoutlen=150 ttimeoutlen=0
@@ -86,6 +106,9 @@ set updatetime=100
 " Case insensitive search
 set ignorecase
 
+" If there is an uppercase letter it will work as ignorecase is off
+set smartcase
+
 " Persistent undo, undo works after closing file
 set undofile
 
@@ -99,22 +122,22 @@ set noswapfile
 set expandtab
 
 " The width of a TAB is set to 2. Still it is a \t. It is just that. Vim will interpret it to be having a width of 2.
-set tabstop=2       
+set tabstop=2
 
 " Indents will have a width of 2
 set shiftwidth=2
 
 " Sets the number of columns for a TAB
-set softtabstop=2   
+set softtabstop=2
 
 " Gets rid of thing like --INSERT--
-set noshowmode 
+set noshowmode
 
 " Gets rid of display of last command
-set noshowcmd  
+set noshowcmd
 
 " Gets rid of the file name displayed in the command line bar
-set shortmess+=F  
+set shortmess+=F
 
 " Remove SpellCap highlight
 autocmd VimEnter * hi clear SpellCap
@@ -169,8 +192,8 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " Toggle line numbers (<bar> needs to be used if chaining multiple commands)
 "nnoremap <C-l> :set nu! <bar> :set rnu!<CR>
 
-" Toggles spellcheck
-nnoremap <C-s> :set spell!<CR>
+" Corrects mistyped word
+nnoremap <C-s> 1z=
 
 " Opens floating terminal
 nnoremap ' :FloatermNew --height=0.8 --width=0.8<CR>
@@ -205,9 +228,6 @@ map <C-o> :NERDTreeToggle<CR>
 " Multiple cursors
 let g:multi_cursor_start_word_key = '<C-n>'
 
-" Set Leader to Space
-let mapleader = "\<Space>"
-
 " Toggles comment with Ctrl+/ NOT _, vim for some reason registers <C-/> as
 " <C-_>
 map <C-_> <plug>NERDCommenterToggle
@@ -215,7 +235,7 @@ map <C-_> <plug>NERDCommenterToggle
 " Maps leader(space) to be same as leader-w
 map <Leader> <Plug>(easymotion-w)
 
-" Uncomment the following to have Vim jump to the last position when                                                       
+" Uncomment the following to have Vim jump to the last position when
 " reopening a file
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
@@ -260,7 +280,7 @@ let g:UltiSnipsJumpForwardTrigger="<S-tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetStorageDirectoryForUltiSnipsEdit="/Users/Darko/.config/nvim/snippets"
+let g:UltiSnipsSnippetStorageDirectoryForUltiSnipsEdit="/Users/Darko/.config/nvim/UltiSnips"
 
 " ============================= "
 " ============ CoC ============ "
@@ -277,6 +297,17 @@ let g:UltiSnipsSnippetStorageDirectoryForUltiSnipsEdit="/Users/Darko/.config/nvi
 "         "kubernetes": "/*.yaml"
 "         }
 "       }
+
+
+"fun! TrimWhitespace()
+    "let l:save = winsaveview()
+    "keeppatterns %s/\s\+$//e
+    "call winrestview(l:save)
+"endfun
+"augroup trimWhitepace
+    "autocmd!
+    "autocmd BufWritePre * :call TrimWhitespace()
+"augroup END
 
 " TextEdit might fail if hidden is not set.
 set hidden

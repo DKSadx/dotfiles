@@ -1,0 +1,41 @@
+priority 1
+
+snippet anon "Self-executing anonymous function"
+func($1) $2{
+	$4
+}($3)
+endsnippet
+
+snippet anonf "Anonymous function assigned to a variable"
+${1:fn} := func($2) $3{
+	$4
+}
+endsnippet
+
+snippet gf "Anonymous Go routine function"
+go func($1) $2{
+	$4
+}($3)
+endsnippet
+
+snippet fp "fmt.Print()"
+fmt.Print($1)
+endsnippet
+
+snippet fpl "fmt.Println()"
+fmt.Println($1)
+endsnippet
+
+snippet fpf "fmt.Printf()"
+fmt.Printf("$1", $2)
+endsnippet
+
+snippet / "Singleline comment"
+// ${1:comment}
+endsnippet
+
+snippet * "Multiline comment"
+/*
+	${1:comment}
+*/
+endsnippet
