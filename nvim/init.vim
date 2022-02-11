@@ -23,7 +23,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'Rigellute/rigel'
 Plug 'sheerun/vim-polyglot'                          " Lang pack
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'  " Pipe means that those two go mostly together
+"Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'  " Pipe means that those two go mostly together
 Plug 'itchyny/lightline.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
@@ -280,7 +280,7 @@ let g:UltiSnipsJumpForwardTrigger="<S-tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetStorageDirectoryForUltiSnipsEdit="/Users/Darko/.config/nvim/UltiSnips"
+let g:UltiSnipsSnippetStorageDirectoryForUltiSnipsEdit="$HOME/.config/nvim/UltiSnips"
 
 " ============================= "
 " ============ CoC ============ "

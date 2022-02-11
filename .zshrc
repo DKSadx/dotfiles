@@ -1,25 +1,35 @@
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000000
+export SAVEHIST=10000000
 # Read man pages with bat
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # Mouse scroll won't work in bat without this
 export BAT_PAGER="less -RF"
+export GOPATH="$HOME/go"
+export GOBIN="$HOME/go/bin"
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git" '
-# Sets shell default editor to neovim
-export EDITOR=/usr/bin/nvim
-export VISUAL=/usr/bin/nvim
+export EDITOR="/opt/brew/bin/nvim"
+export KUBE_EDITOR="/opt/brew/bin/nvim"
+export GO111MODULE="on"
+export TAG_SEARCH_PROG="rg"
 
 
 # ---------------------------------------------- #
 # --------------- Aliases ---------------------- #
 # ---------------------------------------------- #
+# GNU cp command instead of Mac's
 alias cp='gcp'
 # Neovim
 alias nv='nvim'
 alias vim='nvim'
+alias wiki='nvim ~/Documents/wiki/index.md'
 alias zrc='vim ~/.zshrc'
 alias szrc='source ~/.zshrc'
 alias vrc='vim ~/.config/nvim/init.vim'
 alias ll='ls -lGFh'
+alias l='ls -lGFh'
 alias ls='ls -GF'
+
 # Untar tar files
 alias untar='tar -zxvf'
 alias c='clear'
@@ -32,9 +42,14 @@ alias pc="pwd | tr -d '\n' | pbcopy"
 alias uuid="uuidgen | tr '[:upper:]' '[:lower:]'"
 # Python3
 alias py="python3"
-# Add yubikey
-alias yk='ykadd'
 alias less='less -r'
+# Open all snippets
+alias snips='vim ~/.config/nvim/UltiSnips/*'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias gojupyter='docker run -it -p 8888:8888 gopherdata/gophernotes'
 
 #--- Tmux ---
 # Attach to tmux session
@@ -47,14 +62,21 @@ alias tl='tmux ls'
 #--- GIT ---
 # Git diff in neovim
 alias gdif='nvim -c "Gdiff"'
-alias gitA='git add'
-alias gitC='git commit -m'
-alias gitP='git push origin'
+alias gita='git add'
+alias gitc='git commit -m'
+alias gitp='git push origin'
+alias gitco='git checkout'
+
+#--- Movement ---
+alias cdWiki='cd ~/Documents/wiki'
+alias cdSar='cd ~/sar-stuff'
+alias cdDesktop='cd ~/Desktop'
 
 #--- Kubernetes ---
 # K9s
 #alias k='k9s'
-alias k='kubectl'
+alias k='k9s'
+alias k9sc='vim "~/Library/Application Support/k9s/config.yml"'
 alias kc='kubectl'
 alias kgp='kubectl get pods'
 alias kgn='kubectl get nods'
@@ -63,6 +85,27 @@ alias kdp='kubectl describe pod'
 alias kdd='kubectl describe deployment'
 alias kgs='kubectl get svc'
 alias kds='kubectl describe svc'
+
+# Opens man page as pdf
+man2pdf () {
+  man -t "$1" | open -fa "Preview"
+}
+
+cs () {
+  local args="$(sed 's/ /\//g' <<< "${@}")"
+  curl cht.sh/"$args"
+}
+
+# Swap file names
+swap () {
+  local file1="$1"
+  local file2="$2"
+  local tmpHash="$(sha256sum <<< "$(date)" | cut -d' ' -f1)"
+
+  mv "$file1" "$tmpHash"
+  mv "$file2" "$file1"
+  mv "$tmpHash" "$file2"
+}
 
 # ---------------------------------------------- #
 # --------------- Oh-my-zsh stuff -------------- #
@@ -141,6 +184,10 @@ zle -N zle-line-init
 # echo -ne '\e[5 q' # Use beam shape cursor on startup.
 # preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
+# Sets shell default editor to neovim
+EDITOR=/usr/bin/nvim
+VISUAL=/usr/bin/nvim
+
 # Edit line in vim with ctrl-e:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
@@ -149,7 +196,7 @@ bindkey '^e' edit-command-line
 # ---------------------------------------------- #
 # --------------- Plugins ---------------------- #
 # ---------------------------------------------- #
-plugins=(git vi-mode extract)
+plugins=(git osx vi-mode extract)
 
 # Enables git plugin and places the branch name to the right side
 autoload -Uz compinit && compinit
@@ -160,4 +207,16 @@ setopt prompt_subst
 RPROMPT=\$vcs_info_msg_0_
 zstyle ':vcs_info:git:*' formats '%b'
 
+# Tag settings
+if (( $+commands[tag] )); then
+  export TAG_SEARCH_PROG=rg  # replace with rg for ripgrep
+  tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null }
+  alias rg=tag  # replace with rg for ripgrep
+fi
+
 #source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
+[ -f "~/.ghcup/env" ] && source "~/.ghcup/env" # ghcup-env
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin:$HOME/local/bin"
