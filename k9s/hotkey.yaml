@@ -1,0 +1,45 @@
+hotKey:
+  q:
+    shortCut:    q
+    description: Quit
+    command:     q
+  #Hitting Shift-1 navigates to your pod view
+  shift-1:
+    shortCut:    Shift-1
+    description: Viewing Pods
+    command:     pods
+  # Hitting Shift-2 navigates to your Services
+  shift-2:
+    shortCut:    Shift-2
+    description: View Services
+    command:     svc
+  # Hitting Shift-3 navigates to your Deployments
+  shift-3:
+    shortCut:    Shift-3
+    description: View Deployments
+    command:     dp
+  # Hitting Shift-4 navigates to your Namespaces
+  shift-4:
+    shortCut:    Shift-4
+    description: View Namespaces
+    command:     namespace
+  # Hitting Shift-5 navigates to your ConfigMaps
+  shift-5:
+    shortCut:    Shift-5
+    description: View ConfigMaps
+    command:     configmap
+  # Hitting Shift-6 navigates to your StatefulSets
+  shift-6:
+    shortCut:    Shift-6
+    description: View StatefulSets
+    command:     statefulset
+  # Hitting Shift-7 navigates to your DaemonSets
+  shift-7:
+    shortCut:    Shift-7
+    description: View DaemonSets
+    command:     daemonset
+  # Hitting Shift-0 navigates to your Secrets
+  shift-0:
+    shortCut:    Shift-0
+    description: View Secrets
+    command:     sec

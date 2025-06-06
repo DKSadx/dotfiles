@@ -1,0 +1,30 @@
+# $XDG_CONFIG_HOME/k9s/config.yaml
+# Global skin is specified
+k9s:
+  liveViewAutoRefresh: false
+  refreshRate: 2
+  maxConnRetry: 5
+  readOnly: false
+  ui:
+    refreshRate: 2
+    maxConnRetry: 5
+    enableMouse: false
+    headless: false
+    crumbsless: false
+    readOnly: false
+    noIcons: false
+    skin: dracula
+  logger:
+    tail: 2000
+    buffer: 5000
+    sinceSeconds: -1
+    fullScreenLogs: false
+    textWrap: false
+    showTime: false
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70
