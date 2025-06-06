@@ -1,96 +1,133 @@
-export HISTFILE="$HOME/.zsh_history"
-export HISTSIZE=10000000
-export SAVEHIST=10000000
+# Share history between terminals
+setopt SHARE_HISTORY
+
+# Disable clearing terminal with ctrl-l
+bindkey -r "^L"
+
+export HISTFILE="${HOME}/.zsh_history"
+export HISTSIZE=100000
+export SAVEHIST=100000
+
+# Disable autoupdatees for brew
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+# Required for ARM M chips to work with conda
+# export MKL_ENABLE_INSTRUCTIONS=SSE4_2
+
+# Enhancements
 # Read man pages with bat
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # Mouse scroll won't work in bat without this
 export BAT_PAGER="less -RF"
-export GOPATH="$HOME/go"
-export GOBIN="$HOME/go/bin"
+# Don't show .git files with rg
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git" '
-export EDITOR="/opt/brew/bin/nvim"
-export KUBE_EDITOR="/opt/brew/bin/nvim"
-export GO111MODULE="on"
+# Tags
 export TAG_SEARCH_PROG="rg"
+# Use podman with kind
+export KIND_EXPERIMENTAL_PROVIDER="podman"
 
+# Golang
+export GOPATH="${HOME}/go"
+export GOBIN="${HOME}/go/bin"
+export GO111MODULE="on"
+export PATH="${PATH}:${HOME}/local/bin:${HOME}/go/bin"
 
 # ---------------------------------------------- #
 # --------------- Aliases ---------------------- #
 # ---------------------------------------------- #
-# GNU cp command instead of Mac's
-alias cp='gcp'
-# Neovim
-alias nv='nvim'
-alias vim='nvim'
-alias wiki='nvim ~/Documents/wiki/index.md'
-alias zrc='vim ~/.zshrc'
-alias szrc='source ~/.zshrc'
-alias vrc='vim ~/.config/nvim/init.vim'
-alias ll='ls -lGFh'
-alias l='ls -lGFh'
-alias ls='ls -GF'
 
+# Histdb saves history into sqlite for easy querying: https://github.com/larkery/zsh-histdb
+alias hist="histdb"
+# Syntax highlighting pager mostly for diffs: https://github.com/dandavison/delta
+alias diff="delta"
+# GNU cp command instead of Mac's default one
+# alias cp="gcp"
+# nvim > vim
+alias vim="nvim"
+alias zrc="vim ${HOME}/.zshrc"
+# Open zsh base configs
+alias zrcw="vim ${HOME}/.work.zshrc"
+# Open zsh work configs
+alias wzrc="vim ${HOME}/.work.zshrc"
+# Open nvim configs
+alias vrc="vim ${HOME}/.config/nvim/lua/user/init.lua"
+# No idea, forgot the use case
+alias plt="pbpaste | pbcopy"
+# ls but with colors
+alias ll="ls -lGFh"
+alias ls="ls -GF"
 # Untar tar files
-alias untar='tar -zxvf'
-alias c='clear'
-# List all open ports
-alias ports='lsof -i'
+alias untar="tar -zxvf"
+alias c="clear"
 # Mac clipboard
 alias copy="tr -d '\n' | pbcopy"
+# Copy current path
 alias pc="pwd | tr -d '\n' | pbcopy"
 # Generade UUID
 alias uuid="uuidgen | tr '[:upper:]' '[:lower:]'"
-# Python3
-alias py="python3"
-alias less='less -r'
+# Display control characters liek [^
+alias less="less -r"
 # Open all snippets
-alias snips='vim ~/.config/nvim/UltiSnips/*'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias gojupyter='docker run -it -p 8888:8888 gopherdata/gophernotes'
+alias snips="vim ${HOME}/.config/nvim/UltiSnips/*"
+# Jupyter notebook but with go?
+alias gojupyter="docker run -it -p 8888:8888 gopherdata/gophernotes"
+# Box
+alias cdbox="cd ${HOME}/Library/CloudStorage/Box-Box"
 
-#--- Tmux ---
+# --- Tmux ---
 # Attach to tmux session
 alias ta="tmux attach -t"
 # Start named tmux session
-alias tn='tmux new -s'
+alias tn="mux new -s"
 # List tmux sessions
-alias tl='tmux ls'
+alias tl="tmux ls"
 
-#--- GIT ---
+# --- GIT ---
 # Git diff in neovim
-alias gdif='nvim -c "Gdiff"'
-alias gita='git add'
-alias gitc='git commit -m'
-alias gitp='git push origin'
-alias gitco='git checkout'
+alias gdif="nvim -c 'Gdiff'"
+alias gita="git add"
+alias gitc="git commit -m"
+alias gitp="git push origin"
+alias gitpl='git pull --rebase origin $(git rev-parse --abbrev-ref HEAD)'
+alias gitco="git checkout"
 
-#--- Movement ---
-alias cdWiki='cd ~/Documents/wiki'
-alias cdSar='cd ~/sar-stuff'
-alias cdDesktop='cd ~/Desktop'
+# --- Containers and k8s ---
+alias docker="podman"
+alias kc="kubectl"
+alias kgp="kubectl get pods"
+alias kgn="kubectl get nods"
+alias kgd="kubectl get deployment"
+alias kdp="kubectl describe pod"
+alias kdd="kubectl describe deployment"
+alias kgs="kubectl get svc"
+alias kds="kubectl describe svc"
 
-#--- Kubernetes ---
-# K9s
-#alias k='k9s'
-alias k='k9s'
-alias k9sc='vim "~/Library/Application Support/k9s/config.yml"'
-alias kc='kubectl'
-alias kgp='kubectl get pods'
-alias kgn='kubectl get nods'
-alias kgd='kubectl get deployment'
-alias kdp='kubectl describe pod'
-alias kdd='kubectl describe deployment'
-alias kgs='kubectl get svc'
-alias kds='kubectl describe svc'
+# Encode string to base64
+b64 () {
+  echo "${1}" | tr -d '\n' | base64
+}
+
+# Decoded base64 to string
+b64d () {
+  echo "${1}" | base64 -d
+}
 
 # Opens man page as pdf
 man2pdf () {
-  man -t "$1" | open -fa "Preview"
+  man -t "${1}" | open -fa "Preview"
 }
 
+# Escape quotes
+eqs () {
+  echo "${1}" | sed 's/\"/\\\"/g' | tr -d '\n' | pbcopy 
+}
+
+# Un-Escape quotes
+ueqs () {
+  echo "${1}" | sed 's/\\\"/\"/g' | tr -d '\n' | pbcopy 
+}
+
+# Get cheat sheet for specific command; cs lsof
 cs () {
   local args="$(sed 's/ /\//g' <<< "${@}")"
   curl cht.sh/"$args"
@@ -107,42 +144,70 @@ swap () {
   mv "$tmpHash" "$file2"
 }
 
-# ---------------------------------------------- #
-# --------------- Oh-my-zsh stuff -------------- #
-# ---------------------------------------------- #
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="agnoster"
 
-# Theme
-#ZSH_THEME="theunraveler"
-ZSH_THEME="robbyrussell"
-#PROMPT='[%m@%1d] '
-PS1=$'%{\e[0;32m%}[%1d] >%{\e[0m%} '
-#PS1=$'%{\e%}[0;32m[%m@%1d] %{\e%}[0m'
-#%{...%}
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
 
-# Disables auto updates
-DISABLE_AUTO_UPDATE="true"
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
+# Uncomment the following line to disable auto-setting terminal title.
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+HIST_STAMPS='%d.%m.%y'
+
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
+plugins=(
+  git 
+  vi-mode 
+  zsh-histdb 
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+)
 
-# ---------------------------------------------- #
-# --------------- Configs ---------------------- #
-# ---------------------------------------------- #
+source $ZSH/oh-my-zsh.sh
+
+# ------------------
+# User configuration
+# ------------------
+
+# PROMPT='[%m@%1d] '
+# PS1=$'%{\e[0;32m%}[%1d] >%{\e[0m%} '
+PROMPT=$'%{\e[0;32m%}[%1d] >%{\e[0m%} '
+# precmd() {
+#   PROMPT=$'%{\e[0;32m%}[%1d] >%{\e[0m%} '
+#   PS1="$PROMPT"
+# }
+
+# Sets shell default editor to neovim
+EDITOR="/opt/homebrew/bin/nvim"
+VISUAL="/opt/homebrew/bin/nvim"
+KUBE_EDITOR="/opt/homebrew/bin/nvim"
+# Disables auto updates
+DISABLE_AUTO_UPDATE="true"
 
 # Basic auto/tab complete:
+[[ -d /opt/homebrew/share/zsh/site-functions ]] && fpath+=(/opt/homebrew/share/zsh/site-functions)
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
@@ -163,7 +228,7 @@ bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 #bindkey -v '^?' backward-delete-char
 
-# Change cursor shape for different vi modes.
+# Change cursor shape for different vi modes
 function zle-keymap-select {
   if [[ ${KEYMAP} == vicmd ]] ||
      [[ $1 = 'block' ]]; then
@@ -177,28 +242,17 @@ function zle-keymap-select {
 }
 zle -N zle-keymap-select
 zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    # Initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    zle -K viins 
     echo -ne "\e[5 q"
 }
 zle -N zle-line-init
-# echo -ne '\e[5 q' # Use beam shape cursor on startup.
-# preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-# Sets shell default editor to neovim
-EDITOR=/usr/bin/nvim
-VISUAL=/usr/bin/nvim
-
-# Edit line in vim with ctrl-e:
+# Opens line in Vim with 'ctrl-e' and after edit places it into the terminal
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-
-# ---------------------------------------------- #
-# --------------- Plugins ---------------------- #
-# ---------------------------------------------- #
-plugins=(git osx vi-mode extract)
-
-# Enables git plugin and places the branch name to the right side
+# Enables Git plugin and display the branch name on the right side
 autoload -Uz compinit && compinit
 autoload -Uz vcs_info
 precmd_vcs_info() { vcs_info }
@@ -207,16 +261,24 @@ setopt prompt_subst
 RPROMPT=\$vcs_info_msg_0_
 zstyle ':vcs_info:git:*' formats '%b'
 
-# Tag settings
-if (( $+commands[tag] )); then
-  export TAG_SEARCH_PROG=rg  # replace with rg for ripgrep
-  tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null }
-  alias rg=tag  # replace with rg for ripgrep
-fi
-
-#source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Kubectl auto completion
 [[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
-[ -f "~/.ghcup/env" ] && source "~/.ghcup/env" # ghcup-env
+
+# Node version manager: https://github.com/nvm-sh/nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# https://sdkman.io
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin:$HOME/local/bin"
+export PATH="${PATH}:${HOME}/.rvm/bin"
+
+[[ -f "${HOME}/.fzf.zsh" ]] && source ~/.fzf.zsh
+
+# Load work related configs
+[[ -f "${HOME}/.work.zshrc" ]] && source "${HOME}/.work.zshrc"
+

@@ -1,0 +1,37 @@
+[user]
+	name = 
+	email = 
+	signingkey = ~/.ssh/id_rsa.pub
+[core]
+	hooksPath = ~/.git-templates/hooks
+  pager = delta
+	editor = nvim
+	excludesFile = ~/.gitignore
+[delta]
+    plus-color = "#012800"
+    minus-color = "#340001"
+    syntax-theme = Monokai Extended Origin
+    side-by-side = true
+    max-line-length = 0
+[interactive]
+    diffFilter = delta --color-only
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[branch]
+	autoSetupMerge = always
+[push]
+	default = matching
+[merge]
+	tool = opendiff
+  conflictstyle = zdiff3
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
