@@ -57,7 +57,9 @@ setopt SHARE_HISTORY
 bindkey -r "^L"
 
 # Fixes opacity problem for the zsh-autosuggestions plugin
-export TERM="xterm-256color"
+# This has weird behavior, to fix the opacity first enable it but it will break tmux.
+# After the opacity is fixed, disable it again and both the plugin and tmux will work
+# export TERM="xterm-256color"
 
 export HISTFILE="${HOME}/.zsh_history"
 export HISTSIZE=100000
@@ -65,6 +67,9 @@ export SAVEHIST=100000
 
 # Disable autoupdatees for brew
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+# Disable autocd
+unsetopt autocd
 
 # Required for ARM M chips to work with conda
 # export MKL_ENABLE_INSTRUCTIONS=SSE4_2
@@ -105,7 +110,7 @@ alias zrcw="vim ${HOME}/.work.zshrc"
 # Open zsh work configs
 alias wzrc="vim ${HOME}/.work.zshrc"
 # Open nvim configs
-alias vrc="vim ${HOME}/.config/nvim/lua/user/init.lua"
+alias vrc="cd ${HOME}/.config/nvim/lua/"
 # No idea, forgot the use case
 alias plt="pbpaste | pbcopy"
 # # ls but with colors
@@ -113,7 +118,7 @@ alias plt="pbpaste | pbcopy"
 # alias ls="ls -GF"
 # Prettier ls: https://github.com/eza-community/eza
 alias ll="eza -lh"
-alias ls="eza -g"
+alias ls="eza -gH"
 # Untar tar files
 alias untar="tar -zxvf"
 alias c="clear"
@@ -133,6 +138,17 @@ alias gojupyter="docker run -it -p 8888:8888 gopherdata/gophernotes"
 alias cdbox="cd ${HOME}/Library/CloudStorage/Box-Box"
 
 # --- Tmux ---
+t() {
+  # Tmux-sessionizer inspired by https://github.com/ThePrimeagen/tmux-sessionizer.
+  # Uses https://github.com/skim-rs/skim
+  declare -a tmux_sessionizer_paths=( 
+  "${HOME}/Library/CloudStorage/Box-Box/Obsidian/main/Interview/Algorithms-and-data-structures/practice-go"
+  "${HOME}/dactyl-manuform-stuff"
+  "${HOME}/projects"
+  )
+
+  ${HOME}/projects/min-dotfiles/tmux-sessionizer.sh ${tmux_sessionizer_paths[@]}
+}
 # Attach to tmux session
 alias ta="tmux attach -t"
 # Start named tmux session
