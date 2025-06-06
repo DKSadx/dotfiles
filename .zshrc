@@ -1,8 +1,63 @@
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="agnoster"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+HIST_STAMPS='%d.%m.%y'
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+
+plugins=(
+  git 
+  vi-mode 
+  zsh-histdb 
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+)
+
+source $ZSH/oh-my-zsh.sh
+
+
+# IMPORTANT: These configuration files must be below the 'source $ZSH/oh-my-zsh.sh' script!!!
+# If it's not and if there is a conflict, the oh-my-zsh builtin aliases will replace the user aliases that were set before that line
+# Example: ls alias won't apply if placed above
+
+# ------------------
+# User configuration
+# ------------------
+
 # Share history between terminals
 setopt SHARE_HISTORY
 
 # Disable clearing terminal with ctrl-l
 bindkey -r "^L"
+
+# Fixes opacity problem for the zsh-autosuggestions plugin
+export TERM="xterm-256color"
 
 export HISTFILE="${HOME}/.zsh_history"
 export HISTSIZE=100000
@@ -53,9 +108,12 @@ alias wzrc="vim ${HOME}/.work.zshrc"
 alias vrc="vim ${HOME}/.config/nvim/lua/user/init.lua"
 # No idea, forgot the use case
 alias plt="pbpaste | pbcopy"
-# ls but with colors
-alias ll="ls -lGFh"
-alias ls="ls -GF"
+# # ls but with colors
+# alias ll="ls -lGFh"
+# alias ls="ls -GF"
+# Prettier ls: https://github.com/eza-community/eza
+alias ll="eza -lh"
+alias ls="eza -g"
 # Untar tar files
 alias untar="tar -zxvf"
 alias c="clear"
@@ -144,52 +202,7 @@ swap () {
   mv "$tmpHash" "$file2"
 }
 
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
 
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="agnoster"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-HIST_STAMPS='%d.%m.%y'
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
-plugins=(
-  git 
-  vi-mode 
-  zsh-histdb 
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-)
-
-source $ZSH/oh-my-zsh.sh
-
-# ------------------
-# User configuration
-# ------------------
 
 # PROMPT='[%m@%1d] '
 # PS1=$'%{\e[0;32m%}[%1d] >%{\e[0m%} '
