@@ -59,7 +59,7 @@ bindkey -r "^L"
 # Fixes opacity problem for the zsh-autosuggestions plugin
 # This has weird behavior, to fix the opacity first enable it but it will break tmux.
 # After the opacity is fixed, disable it again and both the plugin and tmux will work
-# export TERM="xterm-256color"
+export TERM="xterm-256color"
 
 export HISTFILE="${HOME}/.zsh_history"
 export HISTSIZE=100000
@@ -142,13 +142,13 @@ t() {
   # Tmux-sessionizer inspired by https://github.com/ThePrimeagen/tmux-sessionizer.
   # Uses https://github.com/skim-rs/skim
   declare -a tmux_sessionizer_paths=( 
-  "${HOME}/Library/CloudStorage/Box-Box/Obsidian/main/Interview/Algorithms-and-data-structures/practice-go"
   "${HOME}/dactyl-manuform-stuff"
   "${HOME}/projects"
   )
 
-  ${HOME}/projects/min-dotfiles/tmux-sessionizer.sh ${tmux_sessionizer_paths[@]}
+  TMUX_SESSIONIZER_HIDE_BASE_PATH="${HOME}" "${HOME}"/projects/min-dotfiles/tmux-sessionizer.sh ${tmux_sessionizer_paths[@]}
 }
+
 # Attach to tmux session
 alias ta="tmux attach -t"
 # Start named tmux session

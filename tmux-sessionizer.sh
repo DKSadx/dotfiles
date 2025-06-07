@@ -7,6 +7,9 @@ This script enables you to interactivly open projects in new tmux sessions
 If the session already exists, instead it will attach you to that session
 This script requires that you pass the absolute paths of directories 
 where you projects reside.
+You can set TMUX_SESSIONIZER_HIDE_BASE_PATH environment variable if you want to
+hide the base path from the the menu. This is useful if you have long paths.
+
 EOF
 }
 
@@ -16,6 +19,8 @@ if [[ $# -eq 0 ]] || [[ $1 =~ ^(help|--help|-h)$ ]]; then
   exit 1
 fi
 
+[[ -n "${TMUX_SESSIONIZER_HIDE_BASE_PATH}" ]] && base_path="${TMUX_SESSIONIZER_HIDE_BASE_PATH}"
+
 # Arguments are supported absolute paths
 # This is made so that it can be used for different cases and makes it a lot more flexible
 # For example, if you have nfs and also local files, you want to separate those two so
@@ -23,7 +28,7 @@ fi
 # slows down your local search/flow. You can have separate bindings for those two actions
 declare -a directories=( $@ )
 
-selected="$(find "${directories[@]}" -type d -maxdepth 1 -mindepth 1 | sed "s|^${HOME}/||" | sk --margin 20% --color bw)"
+selected="$(find "${directories[@]}" -type d -maxdepth 1 -mindepth 1 | sed "s|^${base_path}/||" | sk --margin 20% --color bw)"
 
 if [[ -z $selected ]]; then
   exit 0
@@ -38,15 +43,15 @@ fi
 tmux_running="$(pgrep tmux)"
 
 if [[ -z "${TMUX}" ]] && [[ -z "${tmux_running}" ]]; then
-  tmux new-session -s "${selected_name}" -c "${HOME}/${selected}"
+  tmux new-session -s "${selected_name}" -c "${base_path}/${selected}"
   exit 0
 fi
 
 if ! $(tmux has-session -t="${selected_name}" 2> /dev/null); then
-  tmux new-session -ds "${selected_name}" -c "${HOME}/${selected}" 
+  tmux new-session -ds "${selected_name}" -c "${base_path}/${selected}" 
   tmux rename-window -t 1 "${selected_name}-1"
-  tmux new-window -t "${selected_name}":2 -n "${selected_name}-2" -c "${HOME}/${selected}"
-  tmux new-window -t "${selected_name}":3 -n "${selected_name}-3" -c "${HOME}/${selected}"
+  tmux new-window -t "${selected_name}":2 -n "${selected_name}-2" -c "${base_path}/${selected}"
+  tmux new-window -t "${selected_name}":3 -n "${selected_name}-3" -c "${base_path}/${selected}"
   tmux select-window -t "${selected_name}":1
 fi
 
