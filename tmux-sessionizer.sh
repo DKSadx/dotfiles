@@ -40,12 +40,10 @@ if [[ $(wc -c <<< "${selected_name}") -gt 20 ]]; then
 fi
 
 
-tmux_running="$(pgrep tmux)"
-
-if [[ -z "${TMUX}" ]] && [[ -z "${tmux_running}" ]]; then
-  tmux new-session -s "${selected_name}" -c "${base_path}/${selected}"
-  exit 0
-fi
+# tmux_running="$(pgrep tmux)"
+# if [[ -z "${TMUX}" ]] && [[ -z "${tmux_running}" ]]; then
+#   tmux new-session -s "${selected_name}" -c "${base_path}/${selected}"
+# fi
 
 if ! $(tmux has-session -t="${selected_name}" 2> /dev/null); then
   tmux new-session -ds "${selected_name}" -c "${base_path}/${selected}" 
