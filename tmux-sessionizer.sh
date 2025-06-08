@@ -28,7 +28,20 @@ fi
 # slows down your local search/flow. You can have separate bindings for those two actions
 declare -a directories=( $@ )
 
-dirs=$(find "${directories[@]}" -type d -maxdepth 1 -mindepth 1)
+# Directories that will be ignored
+ignore_directories=(
+  '.pytest_cache'
+  '.test'
+  '.idea'
+  '.git'
+  '.empty'
+  '.jupyter'
+  '.virtual_documents'
+  '__pycache__'
+  '.ipynb_checkpoints'
+)
+
+dirs=$(find "${directories[@]}" -type d -maxdepth 1 -mindepth 1 $(printf "! -path **/%s " ${ignore_directories[@]}) )
 # Add also the provided paths as options
 dirs+=$(printf "\n%s" ${directories[@]})
 
