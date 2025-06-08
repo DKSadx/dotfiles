@@ -28,7 +28,11 @@ fi
 # slows down your local search/flow. You can have separate bindings for those two actions
 declare -a directories=( $@ )
 
-selected="$(find "${directories[@]}" -type d -maxdepth 1 -mindepth 1 | sed "s|^${base_path}/||" | sort -f | sk --margin 20% --color bw)"
+dirs=$(find "${directories[@]}" -type d -maxdepth 1 -mindepth 1)
+# Add also the provided paths as options
+dirs+=$(printf "\n%s" ${directories[@]})
+
+selected="$(echo "${dirs}" | sed "s|^${base_path}/||" | sort -f | sk --margin 20% --color bw)"
 
 if [[ -z $selected ]]; then
   exit 0
