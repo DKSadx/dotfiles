@@ -41,7 +41,10 @@ ignore_directories=(
   '.ipynb_checkpoints'
 )
 
-dirs=$(find "${directories[@]}" -type d -maxdepth 1 -mindepth 1 $(printf "! -path **/%s " ${ignore_directories[@]}) )
+# Construct full find command
+find_command=$(echo "find "${directories[@]}" -type d -maxdepth 1 -mindepth 1 $(printf "! -path '**/%s' " ${ignore_directories[@]})")
+# This eval is required because of the way printf is used to construct the full command
+dirs="$(eval "${find_command}")"
 # Add also the provided paths as options
 dirs+=$(printf "\n%s" ${directories[@]})
 
