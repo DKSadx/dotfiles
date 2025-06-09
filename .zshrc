@@ -306,7 +306,8 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="${PATH}:${HOME}/.rvm/bin"
 
-[[ -f "${HOME}/.fzf.zsh" ]] && source ~/.fzf.zsh
+# Enable fzf support for zsh; fzf will be used for ctrl-R
+source <(fzf --zsh)
 
 # Load work related configs
 [[ -f "${HOME}/.work.zshrc" ]] && source "${HOME}/.work.zshrc"
