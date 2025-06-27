@@ -3,9 +3,9 @@
 
 function help () {
   cat <<EOF
-This script enables you to interactivly open projects in new tmux sessions
-If the session already exists, instead it will attach you to that session
-This script requires that you pass the absolute paths of directories 
+This script enables you to interactively open projects in new tmux sessions.
+If the session already exists, instead it will attach you to that session.
+This script requires that you pass the absolute paths of directories
 where you projects reside.
 You can set TMUX_SESSIONIZER_HIDE_BASE_PATH environment variable if you want to
 hide the base path from the the menu. This is useful if you have long paths.
@@ -21,7 +21,7 @@ fi
 
 [[ -n "${TMUX_SESSIONIZER_HIDE_BASE_PATH}" ]] && base_path="${TMUX_SESSIONIZER_HIDE_BASE_PATH}"
 
-# Arguments are supported absolute paths
+# To include directories, add their absolute path as arguments
 # This is made so that it can be used for different cases and makes it a lot more flexible
 # For example, if you have nfs and also local files, you want to separate those two so
 # that when you search local files, it doesn't have to traverse the nfs file system and

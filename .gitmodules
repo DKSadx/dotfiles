@@ -1,0 +1,9 @@
+[submodule "linux-dotfiles"]
+	path = linux-dotfiles
+	url = git@github.com:DKSadx/Linux-dotfiles.git
+[submodule "nvim/nvim-deprecated"]
+	path = nvim/nvim-deprecated
+	url = git@github.com:DKSadx/nvim-v3-deprecated.git
+[submodule "nvim/nvim-current"]
+	path = nvim/nvim-current
+	url = git@github.com:DKSadx/nvim.git
