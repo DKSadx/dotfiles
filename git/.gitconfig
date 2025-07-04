@@ -20,9 +20,10 @@
 [pull]
 	rebase = true
 [branch]
-	autoSetupMerge = always
+	autoSetupMerge = false
 [push]
-	default = matching
+	# Pushes the current branch to a branch with the same name on the remote.  Similar to matching but only considers the current branch.
+	default = current
 [merge]
 	tool = opendiff
   conflictstyle = zdiff3
