@@ -59,12 +59,6 @@ if [[ $(wc -c <<< "${selected_name}") -gt 20 ]]; then
   selected_name="$(awk -F'_' '{print $NF}' <<< "${selected_name}")"
 fi
 
-
-# tmux_running="$(pgrep tmux)"
-# if [[ -z "${TMUX}" ]] && [[ -z "${tmux_running}" ]]; then
-#   tmux new-session -s "${selected_name}" -c "${base_path}/${selected}"
-# fi
-
 if ! $(tmux has-session -t="${selected_name}" 2> /dev/null); then
   tmux new-session -ds "${selected_name}" -c "${base_path}/${selected}" 
   tmux rename-window -t 1 "${selected_name}-1"

@@ -12,7 +12,10 @@ ZSH_THEME="agnoster"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE=true
+
+# Disables auto updates
+DISABLE_AUTO_UPDATE=true
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -33,7 +36,7 @@ HIST_STAMPS='%d.%m.%y'
 
 plugins=(
   git 
-  vi-mode 
+  # vi-mode # Disable for now because I'm not a fan of yank-to-clipboard behavior
   zsh-histdb 
   zsh-syntax-highlighting
   zsh-autosuggestions
@@ -113,12 +116,9 @@ alias wzrc="vim ${HOME}/.work.zshrc"
 alias vrc="cd ${HOME}/.config/nvim/lua/"
 # No idea, forgot the use case
 alias plt="pbpaste | pbcopy"
-# # ls but with colors
-# alias ll="ls -lGFh"
-# alias ls="ls -GF"
-# Prettier ls: https://github.com/eza-community/eza
-alias ll="eza -lh"
-alias ls="eza -gH"
+alias ll='ls -lGFh'
+alias l='ls -lGFh'
+alias ls='ls -GF'
 # Untar tar files
 alias untar="tar -zxvf"
 alias c="clear"
@@ -152,7 +152,7 @@ t() {
 # Attach to tmux session
 alias ta="tmux attach -t"
 # Start named tmux session
-alias tn="mux new -s"
+alias tn="tmux new -s"
 # List tmux sessions
 alias tl="tmux ls"
 
@@ -166,7 +166,7 @@ alias gitpl='git pull --rebase origin $(git rev-parse --abbrev-ref HEAD)'
 alias gitco="git checkout"
 
 # --- Containers and k8s ---
-alias docker="podman"
+# alias docker="podman"
 alias kc="kubectl"
 alias kgp="kubectl get pods"
 alias kgn="kubectl get nods"
@@ -229,11 +229,9 @@ PROMPT=$'%{\e[0;32m%}[%1d] >%{\e[0m%} '
 # }
 
 # Sets shell default editor to neovim
-EDITOR="/opt/homebrew/bin/nvim"
-VISUAL="/opt/homebrew/bin/nvim"
-KUBE_EDITOR="/opt/homebrew/bin/nvim"
-# Disables auto updates
-DISABLE_AUTO_UPDATE="true"
+export EDITOR="/opt/homebrew/bin/nvim"
+export VISUAL="/opt/homebrew/bin/nvim"
+export KUBE_EDITOR="/opt/homebrew/bin/nvim"
 
 # Basic auto/tab complete:
 [[ -d /opt/homebrew/share/zsh/site-functions ]] && fpath+=(/opt/homebrew/share/zsh/site-functions)
@@ -306,7 +304,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="${PATH}:${HOME}/.rvm/bin"
 
-# Enable fzf support for zsh; fzf will be used for ctrl-R
 source <(fzf --zsh)
 
 # Load work related configs
